@@ -15,7 +15,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Install Frontend Dependencies
         working-directory: ./frontend
@@ -24,13 +24,6 @@ jobs:
       - name: Build Frontend
         working-directory: ./frontend
         run: npm run build
-
-      # Add deployment step for Vercel/Render here
-      # - name: Deploy to Vercel
-      #   uses: amondnet/vercel-action@v20
-      #   with:
-      #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
 
   test-backend:
     runs-on: ubuntu-latest
@@ -41,7 +34,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: '3.13'
 
       - name: Install Backend Dependencies
         working-directory: ./backend
