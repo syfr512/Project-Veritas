@@ -7,6 +7,7 @@ from app.services.email_analyzer import parse_email
 from app.services.url_analyzer import parse_url
 from app.services.audio_analyzer import analyze_audio
 from app.services.video_analyzer import analyze_video
+from app.services.document_forensics import analyze_document
 from app.services.fusion_engine import fuse_evidence
 from app.services.llm_copilot import generate_copilot_response
 from typing import List
@@ -38,12 +39,14 @@ def process_analysis(incident, email_text, url, media_filename, db):
     email_result = parse_email(email_text or "")
     url_result = parse_url(url or "")
     
-    # Check if media is video or audio
+    # Check if media is video, document, or audio
     media_result = {"risk_score": 0.0, "indicators": []}
     if media_filename:
         filename_lower = media_filename.lower()
         if filename_lower.endswith(('.mp4', '.mov', '.avi')):
             media_result = analyze_video(media_filename)
+        elif filename_lower.endswith(('.pdf', '.jpg', '.jpeg', '.png')):
+            media_result = analyze_document(media_filename)
         else:
             media_result = analyze_audio(media_filename)
     
