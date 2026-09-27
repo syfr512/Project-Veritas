@@ -1,14 +1,14 @@
-def fuse_evidence(email_result: dict, url_result: dict, audio_result: dict) -> dict:
-    # Weights for the fusion engine
+def fuse_evidence(email_result: dict, url_result: dict, media_result: dict) -> dict:
+    # Weights for the fusion engine (adjusted for generic media)
     W_EMAIL = 0.35
     W_URL = 0.35
-    W_AUDIO = 0.30
+    W_MEDIA = 0.30
     
     # Calculate weighted score
     fused_score = (
         (email_result.get("risk_score", 0.0) * W_EMAIL) +
         (url_result.get("risk_score", 0.0) * W_URL) +
-        (audio_result.get("risk_score", 0.0) * W_AUDIO)
+        (media_result.get("risk_score", 0.0) * W_MEDIA)
     )
     
     # Scale to 0-100
@@ -26,7 +26,7 @@ def fuse_evidence(email_result: dict, url_result: dict, audio_result: dict) -> d
     all_indicators = (
         email_result.get("indicators", []) + 
         url_result.get("indicators", []) + 
-        audio_result.get("indicators", [])
+        media_result.get("indicators", [])
     )
     
     return {
@@ -35,5 +35,6 @@ def fuse_evidence(email_result: dict, url_result: dict, audio_result: dict) -> d
         "indicators": all_indicators,
         "email_risk": int(email_result.get("risk_score", 0.0) * 100),
         "url_risk": int(url_result.get("risk_score", 0.0) * 100),
-        "audio_risk": int(audio_result.get("risk_score", 0.0) * 100)
+        "audio_risk": int(media_result.get("risk_score", 0.0) * 100), # Keeping audio_risk key for frontend compatibility
+        "media_risk": int(media_result.get("risk_score", 0.0) * 100)
     }
