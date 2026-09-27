@@ -1,0 +1,2 @@
+This is just a mock file to test the file upload and analysis logic.
+The backend ml_mock.py will see the 'deepfake' and '.mp4' in the name and assign a high risk score.
